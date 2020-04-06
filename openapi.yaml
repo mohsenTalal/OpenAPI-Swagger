@@ -1,1 +1,866 @@
 
+openapi: 3.0.1
+info:
+  description: |
+    Examble Admin APIs
+  version: 1.0.0
+  title: SCE Admin
+  contact:
+    email: Talal1mohsen@outlook.com
+servers:
+  - url: ""
+paths:
+  /activities:
+    get:
+      tags:
+        - Activity
+      summary: To get all main activities
+      description: To get all main activities
+      operationId: ApiServicesAppActivityGetmainactivitiesGet
+      parameters:
+        - name: PageIndex
+          in: query
+          description: Page index
+          schema:
+            type: integer
+            format: int32
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      responses:
+        '200':
+          description: Returns the main activities list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResultDtoOfGetActivitiesOutput'
+        '401':
+          description: Un authorized request
+        '403':
+          description: Forbidden request
+        '404':
+          description: There is no main activities yet
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - ActivityAdmin
+      summary: To create a new main activity
+      description: To create a new main activity
+      operationId: ApiServicesAppActivityadminCreatenewactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateMainActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMainActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateMainActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateMainActivityInput'
+      responses:
+        '200':
+          description: Success message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: While editing activity with name already existed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /activities/sub:
+    get:
+      tags:
+        - Activity
+      summary: To get sub activities filtered by the main activity
+      description: To get sub activities filtered by the main activity
+      operationId: ApiServicesAppActivityGetsubactivitiesGet
+      parameters:
+        - name: MainActivityId
+          in: query
+          description: The main activity id
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: PageIndex
+          in: query
+          description: Page index
+          schema:
+            type: integer
+            format: int32
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      responses:
+        '200':
+          description: Returns the sub activities list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResultDtoOfGetSubActivitiesOutput'
+        '401':
+          description: Un authorized request
+        '403':
+          description: Forbidden request
+        '404':
+          description: The selected main activity is not found
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - ActivityAdmin
+      summary: To create a new sub activity
+      description: To create a new sub activity
+      operationId: ApiServicesAppActivityadminCreatenewsubactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/CreateSubActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateSubActivityInput'
+      responses:
+        '200':
+          description: Success message
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: While adding a new su activity with name already existed
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /activities/edit:
+    post:
+      tags:
+        - ActivityAdmin
+      summary: To edit main activity
+      description: To edit main activity
+      operationId: ApiServicesAppActivityadminEditactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/EditMainActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditMainActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/EditMainActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/EditMainActivityInput'
+      responses:
+        '200':
+          description: Success message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: While editing activity with name already existed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /activities/deactivate:
+    post:
+      tags:
+        - ActivityAdmin
+      summary: >-
+        De Activate the main activity, which will de activate all sub activities
+        below it
+      description: >-
+        De Activate the main activity, which will de activate all sub activities
+        below it
+      operationId: ApiServicesAppActivityadminDeactivatemainactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /activities/activate:
+    post:
+      tags:
+        - ActivityAdmin
+      summary: To activate the de-activated main activity
+      description: To activate the de-activated main activity
+      operationId: ApiServicesAppActivityadminActivatemainactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /activities/sub/deactivate:
+    post:
+      tags:
+        - ActivityAdmin
+      summary: De Activate the sub activity
+      description: De Activate the sub activity
+      operationId: ApiServicesAppActivityadminDeactivatesubactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/services/app/ActivityAdmin/ActivateSubActivity:
+    post:
+      tags:
+        - ActivityAdmin
+      summary: To activate the de-activated sub activity
+      description: To activate the de-activated sub activity
+      operationId: ApiServicesAppActivityadminActivatesubactivityPost
+      parameters:
+        - name: culture
+          in: query
+          description: The language
+          schema:
+            type: string
+            default: ar
+      requestBody:
+        description: ''
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DeactivateOrActivateActivityInput'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Client Error
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    GetActivitiesOutput:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+        status:
+          type: string
+          nullable: true
+          readOnly: true
+        code:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PagedResultDtoOfGetActivitiesOutput:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetActivitiesOutput'
+          nullable: true
+      additionalProperties: false
+    ValidationResult:
+      type: object
+      properties:
+        memberNames:
+          type: array
+          items:
+            type: string
+          nullable: true
+          readOnly: true
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      properties:
+        validationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationResult'
+          description: "The list of validation result. \r\nThis list will be null for every error response else the status 422 `UnprocessableEntity`\r\nIn status 422, It will contain the client validation errors"
+          nullable: true
+          readOnly: true
+        errorCode:
+          type: string
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
+      description: The error response
+    GetSubActivitiesOutput:
+      type: object
+      properties:
+        mainActivityId:
+          type: integer
+          format: int32
+        isActive:
+          type: boolean
+        status:
+          type: string
+          nullable: true
+          readOnly: true
+        code:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PagedResultDtoOfGetSubActivitiesOutput:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int32
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetSubActivitiesOutput'
+          nullable: true
+      additionalProperties: false
+    CreateMainActivityInput:
+      required:
+        - code
+        - name
+      type: object
+      properties:
+        name:
+          pattern: >-
+            ^([
+            ]|[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]){1,100}$
+          type: string
+          description: >-
+            The main activity Arabic name accept only arabic characters and
+            spaces
+          nullable: true
+        code:
+          pattern: '^([a-zA-Z - _]){1,100}$'
+          type: string
+          description: The main activity code accept only English characters and spaces
+          nullable: true
+      additionalProperties: false
+    SuccessResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        message:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          nullable: true
+        errorMessage:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EditMainActivityInput:
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Main activity id
+          format: int32
+        name:
+          pattern: >-
+            ^([
+            ]|[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]){1,100}$
+          type: string
+          description: >-
+            The main activity Arabic name accept only arabic characters and
+            spaces
+          nullable: true
+      additionalProperties: false
+    DeactivateOrActivateActivityInput:
+      required:
+        - activityId
+      type: object
+      properties:
+        activityId:
+          maximum: 2147483647
+          minimum: 1
+          type: integer
+          description: The activity id
+          format: int32
+      additionalProperties: false
+    CreateSubActivityInput:
+      required:
+        - code
+        - mainActivityId
+        - name
+      type: object
+      properties:
+        name:
+          pattern: >-
+            ^([
+            ]|[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]){1,100}$
+          type: string
+          description: Sub activity name accept only arabic characters and spaces
+          nullable: true
+        code:
+          pattern: '[0-9]{1,4}'
+          type: string
+          description: The sub activity code accept only English characters and spaces
+          nullable: true
+        mainActivityId:
+          type: integer
+          description: The main activity id
+          format: int32
+      additionalProperties: false
+tags:
+  - name: ActivityAdmin
+    description: 'To manage create, edit and activate/deactivate the activities by the admin'
+  - name: Activity
+    description: To manage activities
