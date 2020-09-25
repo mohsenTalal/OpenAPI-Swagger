@@ -18,6 +18,7 @@ Is an API description format for REST APIs. An OpenAPI file allows you to descri
 403 - Forbidden Access Exception, 
 404 - Not Found Access Exception,
 409 - Business Exception,
+422 - Client Error
 500 - Internal Server Error Exception,
 
 ## Current Version - 3.0.1
